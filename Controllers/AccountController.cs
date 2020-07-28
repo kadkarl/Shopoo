@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -18,6 +15,7 @@ namespace Shopoo.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private EFShopoo Db = new EFShopoo();
 
         public AccountController()
         {
@@ -72,6 +70,18 @@ namespace Shopoo.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
+            }
+
+            var user = await UserManager.FindByEmailAsync(model.Email);
+
+            if (user != null)
+            {
+                var role = await UserManager.GetRolesAsync(user.Id);
+
+                if (role[0] == "Admin")
+                {
+                    return RedirectToAction("Dashboard", "Home");
+                }
             }
 
             // Ceci ne comptabilise pas les échecs de connexion pour le verrouillage du compte
@@ -156,12 +166,12 @@ namespace Shopoo.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // Ajout dun' role Admin
+                    // Ajout d'un role Admin
                     var _role = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     var _roleManager = new RoleManager<IdentityRole>(_role);
 
-                    await _roleManager.CreateAsync(new IdentityRole("Admin"));
-                    await UserManager.AddToRoleAsync(user.Id, "Admin");
+                    await _roleManager.CreateAsync(new IdentityRole("Client"));
+                    await UserManager.AddToRoleAsync(user.Id, "Client");
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
@@ -171,7 +181,7 @@ namespace Shopoo.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirmez votre compte", "Confirmez votre compte en cliquant <a href=\"" + callbackUrl + "\">ici</a>");
 
-                    return RedirectToAction("Create", "Utilisateur");
+                    return RedirectToAction("Create", "Utilisateurs");
                 }
                 AddErrors(result);
             }

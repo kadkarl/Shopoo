@@ -13,7 +13,7 @@
         // Pour cibler une autre base de données et/ou un autre fournisseur de base de données, modifiez 
         // la chaîne de connexion « EFShopoo » dans le fichier de configuration de l'application.
         public EFShopoo()
-            : base("name=EFShopoo")
+            : base("name=EFShopoo1")
         {
         }
 
@@ -23,10 +23,8 @@
         public virtual DbSet<Utilisateur> Utilisateurs { get; set; }
         public virtual DbSet<Produit> Produits { get; set; }
         public virtual DbSet<Categorie> Categories { get; set; }
-        public virtual DbSet<Commande> Commandes { get; set; }
         public virtual DbSet<Panier> Paniers { get; set; }
-
-
+        public virtual DbSet<Commande> Commandes { get; set; }
     }
 
     //public class MyEntity

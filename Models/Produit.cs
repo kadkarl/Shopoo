@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shopoo.Models
@@ -26,9 +27,11 @@ namespace Shopoo.Models
         [Required(ErrorMessage = "Veuillez indiquer si le produit est mis en vente")]
         public bool MisEnVente { get; set; }
 
-        public virtual int IdCategorie { get; set; }
+        public virtual Categorie Categorie { get; set; }
 
-        public virtual int IdCommande { get; set; }
+        public virtual ICollection<Commande> Commandes { get; set; }
+
+        public virtual ICollection<Panier> Paniers { get; set; }
 
 
     }

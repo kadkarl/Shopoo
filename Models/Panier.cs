@@ -10,7 +10,7 @@ namespace Shopoo.Models
 
         public virtual ICollection<Produit> Produits { get; set; }
 
-        public virtual int IdUtilisateur { get; set; }
+        public virtual Utilisateur Utilisateur { get; set; }
 
     }
 }
