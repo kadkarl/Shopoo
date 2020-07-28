@@ -20,7 +20,7 @@ namespace Shopoo.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("EFShopoo", throwIfV1Schema: false)
         {
         }
 
@@ -28,5 +28,15 @@ namespace Shopoo.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Shopoo.Models.Produit> Produits { get; set; }
+
+        public System.Data.Entity.DbSet<Shopoo.Models.Categorie> Categories { get; set; }
+
+        public System.Data.Entity.DbSet<Shopoo.Models.Utilisateur> Utilisateurs { get; set; }
+
+        public System.Data.Entity.DbSet<Shopoo.Models.Commande> Commandes { get; set; }
+
+        public System.Data.Entity.DbSet<Shopoo.Models.Panier> Paniers { get; set; }
     }
 }

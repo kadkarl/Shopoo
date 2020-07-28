@@ -13,7 +13,7 @@ namespace Shopoo.Models
 
         public bool EstValide { get; set; }
 
-        public virtual Utilisateur Utilisateur { get; set; }
+        public virtual int IdUtilisateur { get; set; }
 
         public ICollection<Produit> Produits { get; set; }
     }

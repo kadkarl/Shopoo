@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Shopoo.Models
 {
@@ -13,7 +10,7 @@ namespace Shopoo.Models
 
         public virtual ICollection<Produit> Produits { get; set; }
 
-        public virtual Utilisateur Utilisateur { get; set; }
+        public virtual int IdUtilisateur { get; set; }
 
     }
 }

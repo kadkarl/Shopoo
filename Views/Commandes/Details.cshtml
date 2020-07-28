@@ -1,0 +1,42 @@
+﻿@model Shopoo.Models.Commande
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Commande</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCommande)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCommande)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EstValide)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstValide)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IdUtilisateur)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdUtilisateur)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

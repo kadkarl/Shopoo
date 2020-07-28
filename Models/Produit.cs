@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shopoo.Models
 {
@@ -16,15 +17,18 @@ namespace Shopoo.Models
         [Required(ErrorMessage = "La description du produit est requise !")]
         public string Description { get; set; }
 
+        [DisplayName("Image produit")]
+        public string Image { get; set; }
+
         [Required(ErrorMessage = "La quatitée de produits est requise !")]
         public int QuantiteEnStock { get; set; }
 
         [Required(ErrorMessage = "Veuillez indiquer si le produit est mis en vente")]
         public bool MisEnVente { get; set; }
 
-        public virtual Categorie Categorie { get; set; }
+        public virtual int IdCategorie { get; set; }
 
-        public virtual Commande Commande { get; set; }
+        public virtual int IdCommande { get; set; }
 
 
     }

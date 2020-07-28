@@ -43,6 +43,9 @@
                     @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
                 </p>
                 <p>
+                    @Html.ActionLink("Pas de compte ? S'inscrire ici", "Register")
+                </p>
+                <p>
                     @Html.ActionLink("Vous avez oublié votre mot de passe ?", "ForgotPassword")
                 </p>
             }

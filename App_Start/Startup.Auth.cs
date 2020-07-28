@@ -3,7 +3,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Google;
 using Owin;
 using Shopoo.Models;
 
@@ -58,11 +57,11 @@ namespace Shopoo
             //   appId: "",
             //   appSecret: "");
 
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            {
-                ClientId = "964797610783-250lbhm456eds67o7dnrn82m5of29ch9.apps.googleusercontent.com",
-                ClientSecret = "x8yFJhUmR2lNOYiEAX3B-rKs"
-            });
+            /* app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+             {
+                 ClientId = "964797610783-250lbhm456eds67o7dnrn82m5of29ch9.apps.googleusercontent.com",
+                 ClientSecret = "x8yFJhUmR2lNOYiEAX3B-rKs"
+             });*/
         }
     }
 }
