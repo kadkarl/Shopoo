@@ -106,7 +106,7 @@ namespace Shopoo.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "E-mail")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
     }
 }

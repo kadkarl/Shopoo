@@ -178,6 +178,7 @@
     <Compile Include="Models\Commande.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Panier.cs" />
     <Compile Include="Models\Utilisateur.cs" />
     <Compile Include="Models\Produit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
