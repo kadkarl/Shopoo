@@ -13,18 +13,14 @@
         // Pour cibler une autre base de données et/ou un autre fournisseur de base de données, modifiez 
         // la chaîne de connexion « EFShopoo » dans le fichier de configuration de l'application.
         public EFShopoo()
-            : base("name=EFShopoo1")
+            : base("name=EFShopoo")
         {
         }
 
         // Ajoutez un DbSet pour chaque type d'entité à inclure dans votre modèle. Pour plus d'informations 
         // sur la configuration et l'utilisation du modèle Code First, consultez http://go.microsoft.com/fwlink/?LinkId=390109.
 
-        public virtual DbSet<Utilisateur> Utilisateurs { get; set; }
-        public virtual DbSet<Produit> Produits { get; set; }
-        public virtual DbSet<Categorie> Categories { get; set; }
-        public virtual DbSet<Panier> Paniers { get; set; }
-        public virtual DbSet<Commande> Commandes { get; set; }
+        // public virtual DbSet<MyEntity> MyEntities { get; set; }
     }
 
     //public class MyEntity

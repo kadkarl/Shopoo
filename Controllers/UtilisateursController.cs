@@ -11,14 +11,16 @@ namespace Shopoo.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Utilisateurs
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
             return View(await db.Utilisateurs.ToListAsync());
         }
 
         // GET: Utilisateurs/Details/5
-        [Authorize(Roles = "Admin,Client")]
+        //[Authorize(Roles = "Admin,Client")]
+        [AllowAnonymous]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,8 +35,8 @@ namespace Shopoo.Controllers
             return View(utilisateur);
         }
 
-        [AllowAnonymous]
         // GET: Utilisateurs/Create
+        [AllowAnonymous]
         public ActionResult Create()
         {
             return View();
@@ -45,6 +47,7 @@ namespace Shopoo.Controllers
         // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<ActionResult> Create([Bind(Include = "Id,Nom,Prenom,Adresse,CodePostal,Ville,TelephoneFixe,TelephoneMobile")] Utilisateur utilisateur)
         {
             if (ModelState.IsValid)
@@ -58,7 +61,8 @@ namespace Shopoo.Controllers
         }
 
         // GET: Utilisateurs/Edit/5
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
+        [AllowAnonymous]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,6 +82,7 @@ namespace Shopoo.Controllers
         // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Nom,Prenom,Adresse,CodePostal,Ville,TelephoneFixe,TelephoneMobile")] Utilisateur utilisateur)
         {
             if (ModelState.IsValid)
@@ -90,7 +95,8 @@ namespace Shopoo.Controllers
         }
 
         // GET: Utilisateurs/Delete/5
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
+        [AllowAnonymous]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -108,6 +114,7 @@ namespace Shopoo.Controllers
         // POST: Utilisateurs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Utilisateur utilisateur = await db.Utilisateurs.FindAsync(id);

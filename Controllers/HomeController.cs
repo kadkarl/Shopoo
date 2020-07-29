@@ -1,4 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using Shopoo.Utils;
+using System.Security.Permissions;
+using System.Web.Mvc;
+using System.Web.Security;
+using System.Web.UI.WebControls;
 
 namespace Shopoo.Controllers
 {
@@ -10,13 +14,13 @@ namespace Shopoo.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = Role.Admin)]
         public ActionResult Dashboard()
         {
             return View();
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = Role.Client)]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

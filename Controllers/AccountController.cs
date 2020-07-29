@@ -2,11 +2,13 @@
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Shopoo.Models;
+using Shopoo.Utils;
 
 namespace Shopoo.Controllers
 {
@@ -72,17 +74,11 @@ namespace Shopoo.Controllers
                 return View(model);
             }
 
-            var user = await UserManager.FindByEmailAsync(model.Email);
 
-            if (user != null)
-            {
-                var role = await UserManager.GetRolesAsync(user.Id);
+            ApplicationUser user = await UserManager.FindByEmailAsync(model.Email);
 
-                if (role[0] == "Admin")
-                {
-                    return RedirectToAction("Dashboard", "Home");
-                }
-            }
+            bool isAdmin = UserManager.IsInRole(user.Id, "Admin");
+            bool isClient = UserManager.IsInRole(user.Id, "Client");
 
             // Ceci ne comptabilise pas les échecs de connexion pour le verrouillage du compte
             // Pour que les échecs de mot de passe déclenchent le verrouillage du compte, utilisez shouldLockout: true
@@ -90,16 +86,28 @@ namespace Shopoo.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    if (user != null)
+                    {
+                        if (isAdmin)
+                        {
+                            return RedirectToAction("Dashboard", "Home");
+                        }
+                        else if (isClient)
+                        {
+                            return RedirectToAction("Contact", "Home");
+                        }
+                    }
+                    break;
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Tentative de connexion non valide.");
+                    ModelState.AddModelError("", "Identifiants incorrectes !");
                     return View(model);
             }
+            return View(model);
         }
 
         //
@@ -170,8 +178,8 @@ namespace Shopoo.Controllers
                     var _role = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     var _roleManager = new RoleManager<IdentityRole>(_role);
 
-                    await _roleManager.CreateAsync(new IdentityRole("Client"));
-                    await UserManager.AddToRoleAsync(user.Id, "Client");
+                    await _roleManager.CreateAsync(new IdentityRole(Role.Client));
+                    await UserManager.AddToRoleAsync(user.Id, Role.Client);
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 

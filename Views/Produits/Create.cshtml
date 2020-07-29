@@ -4,17 +4,21 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
-
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Produit</h4>
+        <h4>Ajout d'un Produit</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Categorie, "Categorie", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("IdCategorie", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Categorie, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Libelle, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -48,6 +52,15 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="image_produit" value="default_product.png"
+                       onchange="document.getElementById('imageProduit').src=window.URL.createObjectURL(this.files[0])" />
+                <img id="imageProduit" src="~/images/produits/product-default.png" width="100px" height="100px" title="Choix image produit" />
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.MisEnVente, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
@@ -59,7 +72,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-outline-primary" />
             </div>
         </div>
     </div>

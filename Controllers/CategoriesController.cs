@@ -11,12 +11,14 @@ namespace Shopoo.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Categories
+        [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
             return View(await db.Categories.ToListAsync());
         }
 
         // GET: Categories/Details/5
+        [AllowAnonymous]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,6 +34,7 @@ namespace Shopoo.Controllers
         }
 
         // GET: Categories/Create
+        [AllowAnonymous]
         public ActionResult Create()
         {
             return View();
@@ -42,6 +45,7 @@ namespace Shopoo.Controllers
         // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<ActionResult> Create([Bind(Include = "Id,Libelle")] Categorie categorie)
         {
             if (ModelState.IsValid)
@@ -55,6 +59,7 @@ namespace Shopoo.Controllers
         }
 
         // GET: Categories/Edit/5
+        [AllowAnonymous]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,6 +79,7 @@ namespace Shopoo.Controllers
         // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Libelle")] Categorie categorie)
         {
             if (ModelState.IsValid)
@@ -86,6 +92,7 @@ namespace Shopoo.Controllers
         }
 
         // GET: Categories/Delete/5
+        [AllowAnonymous]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -103,6 +110,7 @@ namespace Shopoo.Controllers
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Categorie categorie = await db.Categories.FindAsync(id);

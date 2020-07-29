@@ -21,13 +21,23 @@
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="nav navbar-nav">
                     <li class="nav-item"><a href="/" class="nav-link"><i class="fa fa-home"></i> Accueil</a></li>
-                    <li class="nav-item"><a href="/home/contact" class="nav-link"><i class="fa fa-envelope"></i> Nous contacter</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
+                        <div class="dropdown-menu">
+                            <a href="/utilisateurs/index" class="dropdown-item"><i class="fa fa-envelope"></i> Utilisateurs</a>
+                            <a href="/categories/index" class="dropdown-item"><i class="fa fa-envelope"></i> Categories</a>
+                            <a href="/produits/index" class="dropdown-item"><i class="fa fa-envelope"></i> Produits</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/home/contact" class="nav-link"><i class="fa fa-envelope"></i> Nous contacter</a>
+                    </li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </nav>
-    <div class="container body-content">
+    <div class="container body-content my-5">
         @RenderBody()
         <hr />
         <footer>
