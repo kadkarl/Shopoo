@@ -59,8 +59,8 @@ namespace Shopoo
 
             /* app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
              {
-                 ClientId = "964797610783-250lbhm456eds67o7dnrn82m5of29ch9.apps.googleusercontent.com",
-                 ClientSecret = "x8yFJhUmR2lNOYiEAX3B-rKs"
+                 ClientId = "",
+                 ClientSecret = ""
              });*/
         }
     }

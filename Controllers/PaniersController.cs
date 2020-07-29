@@ -98,7 +98,7 @@ namespace Shopoo.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult ValidePanier()
+        public ActionResult ValiderPanier()
         {
             bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
 
