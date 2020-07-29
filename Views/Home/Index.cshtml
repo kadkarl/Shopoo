@@ -3,12 +3,14 @@
 @{
     ViewBag.Title = "Shopoo | Accueil";
 
-    var NombreProduits = 0;
+    int NombreProduits = 0;
     if (Session["Panier"] != null)
     {
-        NombreProduits = (Session["Panier"] as List<Shopoo.Models.Produit>).Count();
+        NombreProduits = (Session["Panier"] as List<Shopoo.Models.ProduitVM>).Count();
     }
 }
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 <div class="jumbotron">
     <h1>Shopoo</h1>
@@ -19,18 +21,29 @@
         @foreach (var item in Model)
         {
             <div class="col-md-4">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Libelle)</h5>
+                <a href="/produits/details/@item.Id">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">@Html.DisplayFor(modelItem => item.Libelle)</h5>
+                        </div>
+                        <p class="text-center">
+                            <img class="img-fluid" width="150px" src="~/images/produits/@Html.DisplayFor(modelItem => item.Image)" title="Image produit @Html.DisplayFor(modelItem => item.Libelle)" />
+                        </p>
+                        <div class="card-body text-center">
+                            <h4>
+                                <span class="badge badge-pill badge-info">@Html.DisplayFor(modelItem => item.Prix) €</span>
+                            </h4>
+                            <h6>
+                                <span class="badge badge-pill badge-danger">@Html.DisplayFor(modelItem => item.QuantiteEnStock) En Stock</span>
+                            </h6>
+                            <p class="my-2">
+                                <a href="/paniers/AjouterAuPanier/@Html.DisplayFor(modelItem => item.Id)" class="btn btn-outline-primary btn-block btnAjoutProduitPanier">
+                                    <i class="fa fa-plus"></i> Ajouter au panier
+                                </a>
+                            </p>
+                        </div>
                     </div>
-                    <img src="~/images/produits/@Html.DisplayFor(modelItem => item.Image)" height="250px" title="Image produit @Html.DisplayFor(modelItem => item.Libelle)" />
-                    <div class="card-body">
-                        <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                        <span class="badge badge-pill badge-danger">@Html.DisplayFor(modelItem => item.Prix) €</span>
-                        <span class="badge badge-pill badge-info">@Html.DisplayFor(modelItem => item.QuantiteEnStock) En Stock</span>
-                        @Html.ActionLink("Ajouter", "AjouterAuPanier", "Paniers", new { id = item.Id }, null)
-                    </div>
-                </div>
+                </a>
             </div>
         }
     </div>

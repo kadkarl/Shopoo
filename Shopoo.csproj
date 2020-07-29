@@ -195,6 +195,7 @@
     <Compile Include="Models\Produit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utils\Calcul.cs" />
     <Compile Include="Utils\Role.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -221,6 +222,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\toastNotification.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -280,6 +282,7 @@
     <Content Include="Views\Paniers\Edit.cshtml" />
     <Content Include="Views\Paniers\Index.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Paniers\Voir.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

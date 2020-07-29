@@ -110,7 +110,7 @@ namespace Shopoo.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Libelle,Prix,Description,QuantiteEnStock,MisEnVente")] ProduitVM produit, HttpPostedFileBase Image)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Libelle,Prix,Description,QuantiteEnStock,MisEnVente")] Produit produit, HttpPostedFileBase Image)
         {
             if (ModelState.IsValid)
             {

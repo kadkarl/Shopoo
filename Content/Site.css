@@ -16,9 +16,16 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+.toast-top-right {
+    top: 200px;
+    margin: 0 auto;
+    right: 20px;
+}
+
+.toast-success {
+    background-color: #01a3a4 !important;
+}
+
+.toast-error {
+    background-color: #ff7675 !important;
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Shopoo.Models
 {
@@ -29,6 +25,8 @@ namespace Shopoo.Models
 
         [Required(ErrorMessage = "Veuillez indiquer si le produit est mis en vente")]
         public bool MisEnVente { get; set; }
+
+        public int UniqIdPanier { get; set; }
 
         public virtual int IdCategorie { get; set; }
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Owin;
 using Owin;
-using System.Web.Helpers;
 
 [assembly: OwinStartupAttribute(typeof(Shopoo.Startup))]
 namespace Shopoo

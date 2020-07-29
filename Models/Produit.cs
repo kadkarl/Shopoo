@@ -18,7 +18,7 @@ namespace Shopoo.Models
         [Required(ErrorMessage = "La description du produit est requise !")]
         public string Description { get; set; }
 
-        [DisplayName("Image produit")]
+        [DisplayName("Selectionnez l'image du produit")]
         public string Image { get; set; }
 
         [Required(ErrorMessage = "La quatitée de produits est requise !")]

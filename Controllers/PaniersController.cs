@@ -4,13 +4,17 @@ using System.Net;
 using System.Web.Mvc;
 using Shopoo.Models;
 using System.Collections.Generic;
+using System.Linq;
+using System;
+using Shopoo.Utils;
 
 namespace Shopoo.Controllers
 {
     public class PaniersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private IList<Produit> ProduitsPanier;
+        private IList<ProduitVM> ProduitsPanier;
+        private List<ProduitVM> SessionProduitPanier;
 
         // GET: Paniers
         public async Task<ActionResult> Index()
@@ -42,16 +46,71 @@ namespace Shopoo.Controllers
             }
 
             Produit produit = db.Produits.Find(id);
+
             if (Session["Panier"] == null)
             {
-                ProduitsPanier = new List<Produit>();
+                ProduitsPanier = new List<ProduitVM>();
                 Session["Panier"] = ProduitsPanier;
             }
-            List<Produit> SessionProduitPanier = (List<Produit>)Session["Panier"];
-            SessionProduitPanier.Add(produit);
+
+            SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
+
+            Random random = new Random();
+
+            ProduitVM produitVM = new ProduitVM();
+
+            produitVM.Id = produit.Id;
+            produitVM.Libelle = produit.Libelle;
+            produitVM.Description = produit.Description;
+            produitVM.Prix = produit.Prix;
+            produitVM.Image = produit.Image;
+            produitVM.UniqIdPanier = random.Next();
+
+            SessionProduitPanier.Add(produitVM);
             Session["Panier"] = SessionProduitPanier;
 
-            return RedirectToAction("Index", "Home");
+            return Json(new { success = true, msg = "Produit ajouté au panier" }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [AllowAnonymous]
+        public ActionResult Voir()
+        {
+            SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
+            ViewBag.TotalTTC = Calcul.CalculTotalTTC(SessionProduitPanier);
+            return View("Voir", SessionProduitPanier);
+        }
+
+        [AllowAnonymous]
+        public ActionResult SupprimerProduit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
+            ProduitVM produit = SessionProduitPanier.Where(p => p.UniqIdPanier == id).SingleOrDefault();
+            SessionProduitPanier.Remove(produit);
+            ViewBag.TotalTTC = Calcul.CalculTotalTTC(SessionProduitPanier);
+
+            return View("Voir", SessionProduitPanier);
+        }
+
+        [AllowAnonymous]
+        public ActionResult ValidePanier()
+        {
+            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+
+            if (isLoggedIn)
+            {
+                SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
+                Panier panier = new Panier();
+                //panier.Produits = (Produit)SessionProduitPanier;
+            }
+
+            return RedirectToAction("Login", "Account");
+
         }
 
         // GET: Paniers/Create

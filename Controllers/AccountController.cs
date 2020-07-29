@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -17,6 +18,7 @@ namespace Shopoo.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private EFShopoo Db = new EFShopoo();
+
 
         public AccountController()
         {
@@ -76,8 +78,7 @@ namespace Shopoo.Controllers
 
             ApplicationUser user = await UserManager.FindByEmailAsync(model.Email);
 
-            bool isAdmin = UserManager.IsInRole(user.Id, "Admin");
-            bool isClient = UserManager.IsInRole(user.Id, "Client");
+            List<ProduitVM> SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
 
             // Ceci ne comptabilise pas les échecs de connexion pour le verrouillage du compte
             // Pour que les échecs de mot de passe déclenchent le verrouillage du compte, utilisez shouldLockout: true
@@ -87,13 +88,20 @@ namespace Shopoo.Controllers
                 case SignInStatus.Success:
                     if (user != null)
                     {
+                        bool isAdmin = UserManager.IsInRole(user.Id, "Admin");
+                        bool isClient = UserManager.IsInRole(user.Id, "Client");
+
                         if (isAdmin)
                         {
                             return RedirectToAction("Dashboard", "Home");
                         }
                         else if (isClient)
                         {
-                            return RedirectToAction("Contact", "Home");
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if (SessionProduitPanier != null)
+                        {
+                            return RedirectToAction("Voir", "Paniers");
                         }
                     }
                     break;
@@ -171,6 +179,7 @@ namespace Shopoo.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     // Ajout d'un role Admin
@@ -181,6 +190,13 @@ namespace Shopoo.Controllers
                     await UserManager.AddToRoleAsync(user.Id, Role.Client);
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    List<ProduitVM> SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
+
+                    if (SessionProduitPanier != null)
+                    {
+                        return RedirectToAction("Voir", "Paniers");
+                    }
 
                     // Pour plus d'informations sur l'activation de la confirmation de compte et de la réinitialisation de mot de passe, visitez https://go.microsoft.com/fwlink/?LinkID=320771
                     // Envoyer un message électronique avec ce lien
