@@ -32,6 +32,21 @@
                     <li class="nav-item">
                         <a href="/home/contact" class="nav-link"><i class="fa fa-envelope"></i> Nous contacter</a>
                     </li>
+                    @{
+                        var NombreProduits = 0;
+                        if (Session["Panier"] != null)
+                        {
+                            NombreProduits = (Session["Panier"] as List<Shopoo.Models.Produit>).Count();
+                        }
+                    }
+                    <li class="nav-item">
+                        <h3>
+                            <a href="#" class="nav-link">
+                                <i class="fa fa-shopping-basket"></i>
+                                <span class="badge badge-info">@NombreProduits</span>
+                            </a>
+                        </h3>
+                    </li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

@@ -27,7 +27,7 @@ namespace Shopoo.Models
         [Required(ErrorMessage = "Veuillez indiquer si le produit est mis en vente")]
         public bool MisEnVente { get; set; }
 
-        public virtual Categorie Categorie { get; set; }
+        public virtual ICollection<Categorie> Categorie { get; set; }
 
         public virtual ICollection<Commande> Commandes { get; set; }
 

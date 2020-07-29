@@ -3,12 +3,14 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
 using Shopoo.Models;
+using System.Collections.Generic;
 
 namespace Shopoo.Controllers
 {
     public class PaniersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private IList<Produit> ProduitsPanier;
 
         // GET: Paniers
         public async Task<ActionResult> Index()
@@ -31,7 +33,29 @@ namespace Shopoo.Controllers
             return View(panier);
         }
 
+        [AllowAnonymous]
+        public ActionResult AjouterAuPanier(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Produit produit = db.Produits.Find(id);
+            if (Session["Panier"] == null)
+            {
+                ProduitsPanier = new List<Produit>();
+                Session["Panier"] = ProduitsPanier;
+            }
+            List<Produit> SessionProduitPanier = (List<Produit>)Session["Panier"];
+            SessionProduitPanier.Add(produit);
+            Session["Panier"] = SessionProduitPanier;
+
+            return RedirectToAction("Index", "Home");
+        }
+
         // GET: Paniers/Create
+        [AllowAnonymous]
         public ActionResult Create()
         {
             return View();

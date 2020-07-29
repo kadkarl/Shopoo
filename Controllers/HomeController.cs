@@ -1,17 +1,18 @@
-﻿using Shopoo.Utils;
-using System.Security.Permissions;
+﻿using Shopoo.Models;
+using Shopoo.Utils;
+using System.Linq;
 using System.Web.Mvc;
-using System.Web.Security;
-using System.Web.UI.WebControls;
 
 namespace Shopoo.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View();
+            return View(db.Produits.Where(p => p.MisEnVente == true).ToList<Produit>());
         }
 
         //[Authorize(Roles = Role.Admin)]

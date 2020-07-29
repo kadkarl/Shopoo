@@ -6,6 +6,8 @@ using Shopoo.Models;
 using System.Web;
 using System.IO;
 using System.Linq;
+using AutoMapper;
+using System.Collections.Generic;
 
 namespace Shopoo.Controllers
 {
@@ -51,23 +53,32 @@ namespace Shopoo.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Libelle,Prix,Description,QuantiteEnStock,MisEnVente,IdCategorie")] Produit produit, HttpPostedFileBase image_produit)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Libelle,Prix,Description,QuantiteEnStock,MisEnVente,IdCategorie")] ProduitVM produit, HttpPostedFileBase Image)
         {
-            Categorie categorie = db.Categories.SingleOrDefault(c => c.Id == produit.Categorie.Id);
-
             if (ModelState.IsValid)
             {
-                if (image_produit != null && image_produit.ContentLength > 0)
+                //On utilise le Mapper (AutoMapper) pour gerer les relations
+                var config = new MapperConfiguration(cfg => cfg.CreateMap<ProduitVM, Produit>());
+                var mapper = new Mapper(config);
+
+                Produit p = mapper.Map<Produit>(produit);
+
+                Categorie categorie = db.Categories.SingleOrDefault(c => c.Id == produit.IdCategorie);
+
+                p.Categorie = new List<Categorie>();
+                p.Categorie.Add(categorie);
+
+                if (Image != null && Image.ContentLength > 0)
                 {
-                    var fileName = produit.Libelle + "_" + Path.GetFileName(image_produit.FileName);
-                    var path = Path.Combine(Server.MapPath("~/photos_abonnes/"), fileName);
-                    image_produit.SaveAs(path);
-                    produit.Image = fileName;
+                    var fileName = Path.GetFileName(Image.FileName);
+                    var path = Path.Combine(Server.MapPath("~/images/produits/"), fileName);
+                    Image.SaveAs(path);
+                    p.Image = fileName;
                 }
 
-                if (produit.Image == null) produit.Image = produit.Image + "_" + "default_produit.png";
+                if (p.Image == null) p.Image = "product-default.png";
 
-                db.Produits.Add(produit);
+                db.Produits.Add(p);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -89,6 +100,7 @@ namespace Shopoo.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.IdCategorie = new SelectList(db.Categories, "Id", "Libelle");
             return View(produit);
         }
 
@@ -98,10 +110,20 @@ namespace Shopoo.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Libelle,Prix,Description,QuantiteEnStock,MisEnVente")] Produit produit)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Libelle,Prix,Description,QuantiteEnStock,MisEnVente")] ProduitVM produit, HttpPostedFileBase Image)
         {
             if (ModelState.IsValid)
             {
+                if (Image != null && Image.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(Image.FileName);
+                    var path = Path.Combine(Server.MapPath("~/images/produits/"), fileName);
+                    Image.SaveAs(path);
+                    produit.Image = fileName;
+                }
+
+                if (produit.Image == null) produit.Image = "product-default.png";
+
                 db.Entry(produit).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");

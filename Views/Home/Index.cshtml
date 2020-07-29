@@ -1,10 +1,37 @@
-﻿@{
+﻿@model IEnumerable<Shopoo.Models.Produit>
+
+@{
     ViewBag.Title = "Shopoo | Accueil";
+
+    var NombreProduits = 0;
+    if (Session["Panier"] != null)
+    {
+        NombreProduits = (Session["Panier"] as List<Shopoo.Models.Produit>).Count();
+    }
 }
 
 <div class="jumbotron">
     <h1>Shopoo</h1>
-    <p>
+</div>
 
-    </p>
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Libelle)</h5>
+                    </div>
+                    <img src="~/images/produits/@Html.DisplayFor(modelItem => item.Image)" height="250px" title="Image produit @Html.DisplayFor(modelItem => item.Libelle)" />
+                    <div class="card-body">
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                        <span class="badge badge-pill badge-danger">@Html.DisplayFor(modelItem => item.Prix) €</span>
+                        <span class="badge badge-pill badge-info">@Html.DisplayFor(modelItem => item.QuantiteEnStock) En Stock</span>
+                        @Html.ActionLink("Ajouter", "AjouterAuPanier", "Paniers", new { id = item.Id }, null)
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

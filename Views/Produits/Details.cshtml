@@ -4,8 +4,6 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
 <div>
     <h4>Produit</h4>
     <hr />
@@ -43,6 +41,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+
+        <dd>
+            <img src="~/images/produits/@Html.DisplayFor(modelItem => modelItem.Image)" width="300px" height="300px" title="Image produit @Html.DisplayFor(modelItem => modelItem.Libelle)" />
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.MisEnVente)
         </dt>
 
@@ -54,5 +60,5 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retour", "Index")
 </p>
