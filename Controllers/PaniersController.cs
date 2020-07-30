@@ -64,6 +64,7 @@ namespace Shopoo.Controllers
             produitVM.Description = produit.Description;
             produitVM.Prix = produit.Prix;
             produitVM.Image = produit.Image;
+            produitVM.QuantiteEnStock = produit.QuantiteEnStock;
             produitVM.UniqIdPanier = random.Next();
 
             SessionProduitPanier.Add(produitVM);
@@ -106,7 +107,20 @@ namespace Shopoo.Controllers
             {
                 SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
                 Panier panier = new Panier();
-                //panier.Produits = (Produit)SessionProduitPanier;
+                panier.Produits = new List<Produit>();
+
+                for (int i = 0; i < SessionProduitPanier.Count(); i++)
+                {
+                    Produit produit = new Produit();
+                    produit.Id = SessionProduitPanier[i].Id;
+                    produit.Libelle = SessionProduitPanier[i].Libelle;
+                    produit.Prix = SessionProduitPanier[i].Prix;
+                    produit.Description = SessionProduitPanier[i].Description;
+                    produit.Image = SessionProduitPanier[i].Image;
+                    produit.QuantiteEnStock = SessionProduitPanier[i].QuantiteEnStock--;
+                }
+
+                return View("Voir", panier);
             }
 
             return RedirectToAction("Login", "Account");
