@@ -7,12 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Shopoo.Utils;
+using Microsoft.AspNet.Identity;
 
 namespace Shopoo.Controllers
 {
     public class PaniersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationUserManager _userManager;
         private IList<ProduitVM> ProduitsPanier;
         private List<ProduitVM> SessionProduitPanier;
 
@@ -105,6 +107,8 @@ namespace Shopoo.Controllers
 
             if (isLoggedIn)
             {
+                Utilisateur utilisateur = db.Utilisateurs.Where(u => u.IdIdentityFramework == System.Web.HttpContext.Current.User.Identity.GetUserId()).First<Utilisateur>();
+
                 SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
                 Panier panier = new Panier();
                 panier.Produits = new List<Produit>();
@@ -118,9 +122,12 @@ namespace Shopoo.Controllers
                     produit.Description = SessionProduitPanier[i].Description;
                     produit.Image = SessionProduitPanier[i].Image;
                     produit.QuantiteEnStock = SessionProduitPanier[i].QuantiteEnStock--;
+                    panier.Produits.Add(produit);
                 }
 
-                return View("Voir", panier);
+
+
+                //return View("Voir", panier);
             }
 
             return RedirectToAction("Login", "Account");

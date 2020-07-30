@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
 using Shopoo.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Shopoo.Controllers
 {
@@ -52,9 +53,10 @@ namespace Shopoo.Controllers
         {
             if (ModelState.IsValid)
             {
+                utilisateur.IdIdentityFramework = System.Web.HttpContext.Current.User.Identity.GetUserId();
                 db.Utilisateurs.Add(utilisateur);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
 
             return View(utilisateur);

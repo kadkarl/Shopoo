@@ -7,6 +7,8 @@ namespace Shopoo.Models
         [Key]
         public int Id { get; set; }
 
+        public string IdIdentityFramework { get; set; }
+
         [Required(ErrorMessage = "Votre Nom est requis !")]
         public string Nom { get; set; }
 

@@ -182,7 +182,7 @@ namespace Shopoo.Controllers
 
                 if (result.Succeeded)
                 {
-                    // Ajout d'un role Admin
+                    // Ajout d'un role
                     var _role = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     var _roleManager = new RoleManager<IdentityRole>(_role);
 
@@ -190,13 +190,6 @@ namespace Shopoo.Controllers
                     await UserManager.AddToRoleAsync(user.Id, Role.Client);
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-                    List<ProduitVM> SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
-
-                    if (SessionProduitPanier != null)
-                    {
-                        return RedirectToAction("Voir", "Paniers");
-                    }
 
                     // Pour plus d'informations sur l'activation de la confirmation de compte et de la réinitialisation de mot de passe, visitez https://go.microsoft.com/fwlink/?LinkID=320771
                     // Envoyer un message électronique avec ce lien
