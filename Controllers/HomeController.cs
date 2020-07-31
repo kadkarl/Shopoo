@@ -23,23 +23,26 @@ namespace Shopoo.Controllers
 
                 Panier panier = db.Paniers.Where(p => p.Utilisateur.Id == utilisateur.Id).FirstOrDefault();
 
-                IList<ProduitVM> ProduitsPanier = new List<ProduitVM>();
-                Random random = new Random();
-
-                foreach (var p in panier.Produits)
+                if (panier != null)
                 {
-                    ProduitVM produitVM = new ProduitVM();
-                    produitVM.Id = p.Id;
-                    produitVM.Libelle = p.Libelle;
-                    produitVM.Description = p.Description;
-                    produitVM.Image = p.Image;
-                    produitVM.Prix = p.Prix;
-                    produitVM.QuantiteEnStock = p.QuantiteEnStock;
-                    produitVM.UniqIdPanier = random.Next();
-                    ProduitsPanier.Add(produitVM);
-                }
+                    IList<ProduitVM> ProduitsPanier = new List<ProduitVM>();
+                    Random random = new Random();
 
-                Session["Panier"] = ProduitsPanier;
+                    foreach (var p in panier.Produits)
+                    {
+                        ProduitVM produitVM = new ProduitVM();
+                        produitVM.Id = p.Id;
+                        produitVM.Libelle = p.Libelle;
+                        produitVM.Description = p.Description;
+                        produitVM.Image = p.Image;
+                        produitVM.Prix = p.Prix;
+                        produitVM.QuantiteEnStock = p.QuantiteEnStock;
+                        produitVM.UniqIdPanier = random.Next();
+                        ProduitsPanier.Add(produitVM);
+                    }
+
+                    Session["Panier"] = ProduitsPanier;
+                }
             }
 
             return View(db.Produits.Where(p => p.MisEnVente == true).ToList<Produit>());

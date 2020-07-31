@@ -4,6 +4,13 @@
     ViewBag.Title = "Details de ma commande";
 }
 
+<div class="row my-3">
+    <div class="col-12">
+        <h4>Récapitulatif commande N° @Model.NumeroDeCommande</h4>
+    </div>
+</div>
+<hr />
+
 <div class="row">
     <div class="col-6 text-left">
         <p>
@@ -44,9 +51,6 @@
                 <th>
                     Prix
                 </th>
-                <th>
-                    Actions
-                </th>
             </tr>
 
             @foreach (var item in @Model.Produits)
@@ -67,20 +71,22 @@
             <div class="col-3 ml-auto text-center">
                 <h5 class="my-2 text-left">Total TTC</h5>
                 <h3 class="my-4 text-left">
-                    @ViewBag.TotalTTC €
+                    @Model.TotalTTC €
                 </h3>
             </div>
         </div>
 
-        <div class="row my-3">
-            <div class="col-2">
-                <a href="/commandes/payer" class="btn btn-success">Payer</a>
+        @if (Model.EstValide == false)
+        {
+            <div class="row my-3">
+                <div class="col-2 ml-auto">
+                    <a href="/commandes/payer/@Model.Id" class="btn btn-outline-success">Payer</a>
+                </div>
             </div>
-        </div>
+        }
+
     </div>
 </div>
-
-
 
 <p>
     @Html.ActionLink("Retour", "Index")

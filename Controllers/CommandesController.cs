@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System;
 using Shopoo.Utils;
+using System.Data.Entity.Migrations;
 
 namespace Shopoo.Controllers
 {
@@ -26,23 +27,26 @@ namespace Shopoo.Controllers
 
             Panier panier = db.Paniers.Where(p => p.Utilisateur.Id == utilisateur.Id).FirstOrDefault();
 
-            IList<ProduitVM> ProduitsPanier = new List<ProduitVM>();
-            Random random = new Random();
-
-            foreach (var p in panier.Produits)
+            if (panier != null)
             {
-                ProduitVM produitVM = new ProduitVM();
-                produitVM.Id = p.Id;
-                produitVM.Libelle = p.Libelle;
-                produitVM.Description = p.Description;
-                produitVM.Image = p.Image;
-                produitVM.Prix = p.Prix;
-                produitVM.QuantiteEnStock = p.QuantiteEnStock;
-                produitVM.UniqIdPanier = random.Next();
-                ProduitsPanier.Add(produitVM);
-            }
+                IList<ProduitVM> ProduitsPanier = new List<ProduitVM>();
+                Random random = new Random();
 
-            Session["Panier"] = ProduitsPanier;
+                foreach (var p in panier.Produits)
+                {
+                    ProduitVM produitVM = new ProduitVM();
+                    produitVM.Id = p.Id;
+                    produitVM.Libelle = p.Libelle;
+                    produitVM.Description = p.Description;
+                    produitVM.Image = p.Image;
+                    produitVM.Prix = p.Prix;
+                    produitVM.QuantiteEnStock = p.QuantiteEnStock;
+                    produitVM.UniqIdPanier = random.Next();
+                    ProduitsPanier.Add(produitVM);
+                }
+
+                Session["Panier"] = ProduitsPanier;
+            }
 
             return View(await db.Commandes.Where(u => u.Utilisateur.Id == utilisateur.Id).ToListAsync());
         }
@@ -61,18 +65,33 @@ namespace Shopoo.Controllers
                 return HttpNotFound();
             }
             IList<ProduitVM> SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
-            ViewBag.TotalTTC = Calcul.CalculTotalTTC(SessionProduitPanier);
             return View(commande);
         }
 
-        public ActionResult Payer()
+        public ActionResult Payer(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             string IdIdentityFramework = System.Web.HttpContext.Current.User.Identity.GetUserId();
             Utilisateur utilisateur = db.Utilisateurs.Where(u => u.IdIdentityFramework == IdIdentityFramework).FirstOrDefault<Utilisateur>();
 
             Panier panier = db.Paniers.Where(p => p.Utilisateur.Id == utilisateur.Id).FirstOrDefault();
-            db.Paniers.Remove(panier);
+
+            Commande commande = db.Commandes.Where(c => c.Id == id).SingleOrDefault();
+
+            commande.EstValide = true;
+
+            db.Commandes.AddOrUpdate(commande);
             db.SaveChanges();
+
+            if (panier != null)
+            {
+                db.Paniers.Remove(panier);
+                db.SaveChanges();
+            }
 
             return View();
         }

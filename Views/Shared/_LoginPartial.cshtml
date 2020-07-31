@@ -14,13 +14,16 @@
                     utilisateur = (Session["Utilisateur"] as Shopoo.Models.Utilisateur);
                 }
             }
-            <li class="nav-item">
-                @Html.ActionLink("Bienvenue " + utilisateur.Nom + ' ' + utilisateur.Prenom, "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
-            </li>
-            <li class="nav-item">
-                <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">
-                    <i class="fa fa-off"></i> Déconnecter
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Bienvenue @utilisateur.Nom @utilisateur.Prenom
                 </a>
+                <div class="dropdown-menu">
+                    <a href="/utilisateurs/details/@utilisateur.Id" class="dropdown-item"><i class="fa fa-user"></i> Profil</a>
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">
+                        <i class="fa fa-sign-out"></i> Déconnecter
+                    </a>
+                </div>
             </li>
         </ul>
     }
