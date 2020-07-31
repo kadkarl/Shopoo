@@ -26,13 +26,7 @@ namespace Shopoo.Models
         [Required(ErrorMessage = "Veuillez indiquer si le produit est mis en vente")]
         public bool MisEnVente { get; set; }
 
-        public int UniqIdPanier { get; set; }
-
         public virtual int IdCategorie { get; set; }
-
-        public virtual int IdCommande { get; set; }
-
-        public virtual int IdPaniers { get; set; }
 
     }
 }

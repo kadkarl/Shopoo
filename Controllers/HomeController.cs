@@ -21,29 +21,17 @@ namespace Shopoo.Controllers
                 string IdIdentityFramework = System.Web.HttpContext.Current.User.Identity.GetUserId();
                 Utilisateur utilisateur = db.Utilisateurs.Where(u => u.IdIdentityFramework == IdIdentityFramework).FirstOrDefault<Utilisateur>();
 
-                Session["Utilisateur"] = utilisateur;
-
-                Panier panier = db.Paniers.Where(p => p.Utilisateur.Id == utilisateur.Id).FirstOrDefault();
-
-                if (panier != null)
+                if (utilisateur != null)
                 {
-                    IList<ProduitVM> ProduitsPanier = new List<ProduitVM>();
-                    Random random = new Random();
+                    Session["Utilisateur"] = utilisateur;
 
-                    foreach (var p in panier.Produits)
+                    Panier panier = db.Paniers.Where(p => p.Utilisateur.Id == utilisateur.Id).FirstOrDefault();
+
+                    if (panier != null)
                     {
-                        ProduitVM produitVM = new ProduitVM();
-                        produitVM.Id = p.Id;
-                        produitVM.Libelle = p.Libelle;
-                        produitVM.Description = p.Description;
-                        produitVM.Image = p.Image;
-                        produitVM.Prix = p.Prix;
-                        produitVM.QuantiteEnStock = p.QuantiteEnStock;
-                        produitVM.UniqIdPanier = random.Next();
-                        ProduitsPanier.Add(produitVM);
+                        IList<Produit> ProduitsPanier = new List<Produit>();
+                        Session["Panier"] = ProduitsPanier;
                     }
-
-                    Session["Panier"] = ProduitsPanier;
                 }
             }
 
@@ -51,18 +39,15 @@ namespace Shopoo.Controllers
         }
 
         //Gestion des roles en cours
-        //[Authorize(Roles = Role.Admin)]
-        [AllowAnonymous]
+        [Authorize(Roles = Role.Admin)]
         public ActionResult Dashboard()
         {
             return View();
         }
 
-        //[Authorize(Roles = "Client")]
         [AllowAnonymous]
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
             return View();
         }
     }

@@ -14,8 +14,8 @@ namespace Shopoo.Controllers
     public class PaniersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private IList<ProduitVM> ProduitsPanier;
-        private IList<ProduitVM> SessionProduitPanier;
+        private IList<Produit> ProduitsPanier;
+        private IList<Produit> SessionProduitPanier;
 
         // GET: Paniers
         public async Task<ActionResult> Index()
@@ -35,25 +35,12 @@ namespace Shopoo.Controllers
 
             if (Session["Panier"] == null)
             {
-                ProduitsPanier = new List<ProduitVM>();
+                ProduitsPanier = new List<Produit>();
                 Session["Panier"] = ProduitsPanier;
             }
 
-            SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
-
-            Random random = new Random();
-
-            ProduitVM produitVM = new ProduitVM();
-
-            produitVM.Id = produit.Id;
-            produitVM.Libelle = produit.Libelle;
-            produitVM.Description = produit.Description;
-            produitVM.Prix = produit.Prix;
-            produitVM.Image = produit.Image;
-            produitVM.QuantiteEnStock = produit.QuantiteEnStock;
-            produitVM.UniqIdPanier = random.Next();
-
-            SessionProduitPanier.Add(produitVM);
+            SessionProduitPanier = (List<Produit>)Session["Panier"];
+            SessionProduitPanier.Add(produit);
             Session["Panier"] = SessionProduitPanier;
 
             return Json(new { success = true, msg = "Produit ajouté au panier" }, JsonRequestBehavior.AllowGet);
@@ -63,7 +50,7 @@ namespace Shopoo.Controllers
         [AllowAnonymous]
         public ActionResult Voir()
         {
-            SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
+            SessionProduitPanier = (List<Produit>)Session["Panier"];
             ViewBag.TotalTTC = Calcul.CalculTotalTTC(SessionProduitPanier);
             return View("Voir", SessionProduitPanier);
         }
@@ -76,8 +63,8 @@ namespace Shopoo.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
-            ProduitVM produit = SessionProduitPanier.Where(p => p.UniqIdPanier == id).SingleOrDefault();
+            SessionProduitPanier = (List<Produit>)Session["Panier"];
+            Produit produit = SessionProduitPanier.Where(p => p.UniqIdPanier == id).SingleOrDefault();
             SessionProduitPanier.Remove(produit);
             ViewBag.TotalTTC = Calcul.CalculTotalTTC(SessionProduitPanier);
 
@@ -91,25 +78,14 @@ namespace Shopoo.Controllers
 
             if (Utils.UtilisateurUtil.IsLoggeIn())
             {
-                string IdIdentityFramework = System.Web.HttpContext.Current.User.Identity.GetUserId();
-
-                Utilisateur utilisateur = db.Utilisateurs.Where(u => u.IdIdentityFramework == IdIdentityFramework).First<Utilisateur>();
-
-                SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
+                SessionProduitPanier = (List<Produit>)Session["Panier"];
                 Panier panier = new Panier();
                 panier.Produits = new List<Produit>();
+                panier.Utilisateur = (Utilisateur)Session["Utilisateur"];
 
                 for (int i = 0; i < SessionProduitPanier.Count(); i++)
                 {
-                    Produit produit = new Produit();
-                    produit.Id = SessionProduitPanier[i].Id;
-                    produit.Libelle = SessionProduitPanier[i].Libelle;
-                    produit.Prix = SessionProduitPanier[i].Prix;
-                    produit.Description = SessionProduitPanier[i].Description;
-                    produit.Image = SessionProduitPanier[i].Image;
-                    produit.QuantiteEnStock = SessionProduitPanier[i].QuantiteEnStock--;
-                    panier.Produits.Add(produit);
-                    panier.Utilisateur = utilisateur;
+                    panier.Produits.Add(SessionProduitPanier[i]);
                 }
 
                 db.Paniers.Add(panier);
@@ -118,7 +94,7 @@ namespace Shopoo.Controllers
                 Random random = new Random();
 
                 Commande commande = new Commande();
-                commande.Utilisateur = utilisateur;
+                commande.Utilisateur = panier.Utilisateur = (Utilisateur)Session["Utilisateur"];
                 commande.Produits = new List<Produit>();
                 commande.Produits = panier.Produits;
                 commande.DateCommande = new DateTime().ToString();

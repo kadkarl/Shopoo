@@ -1,13 +1,11 @@
 ﻿using System.Data.Entity;
 using System.Threading.Tasks;
-using System.Net;
 using System.Web.Mvc;
 using Shopoo.Models;
 using System.Linq;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System;
-using Shopoo.Utils;
 using System.Data.Entity.Migrations;
 
 namespace Shopoo.Controllers
@@ -23,29 +21,17 @@ namespace Shopoo.Controllers
             string IdIdentityFramework = System.Web.HttpContext.Current.User.Identity.GetUserId();
             Utilisateur utilisateur = db.Utilisateurs.Where(u => u.IdIdentityFramework == IdIdentityFramework).FirstOrDefault<Utilisateur>();
 
-            Session["Utilisateur"] = utilisateur;
-
-            Panier panier = db.Paniers.Where(p => p.Utilisateur.Id == utilisateur.Id).FirstOrDefault();
-
-            if (panier != null)
+            if (utilisateur != null)
             {
-                IList<ProduitVM> ProduitsPanier = new List<ProduitVM>();
-                Random random = new Random();
+                Session["Utilisateur"] = utilisateur;
 
-                foreach (var p in panier.Produits)
+                Panier panier = db.Paniers.Where(p => p.Utilisateur.Id == utilisateur.Id).FirstOrDefault();
+
+                if (panier != null)
                 {
-                    ProduitVM produitVM = new ProduitVM();
-                    produitVM.Id = p.Id;
-                    produitVM.Libelle = p.Libelle;
-                    produitVM.Description = p.Description;
-                    produitVM.Image = p.Image;
-                    produitVM.Prix = p.Prix;
-                    produitVM.QuantiteEnStock = p.QuantiteEnStock;
-                    produitVM.UniqIdPanier = random.Next();
-                    ProduitsPanier.Add(produitVM);
+                    IList<Produit> ProduitsPanier = new List<Produit>();
+                    Session["Panier"] = ProduitsPanier;
                 }
-
-                Session["Panier"] = ProduitsPanier;
             }
 
             return View(await db.Commandes.Where(u => u.Utilisateur.Id == utilisateur.Id).ToListAsync());
@@ -64,7 +50,7 @@ namespace Shopoo.Controllers
             {
                 return HttpNotFound();
             }
-            IList<ProduitVM> SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
+            IList<Produit> SessionProduitPanier = (List<Produit>)Session["Panier"];
             return View(commande);
         }
 
@@ -90,8 +76,14 @@ namespace Shopoo.Controllers
             {
                 db.Paniers.Remove(panier);
                 db.SaveChanges();
+                Session.Remove("Panier");
             }
 
+            return RedirectToAction("Success", "Commandes");
+        }
+
+        public ActionResult Success()
+        {
             return View();
         }
 

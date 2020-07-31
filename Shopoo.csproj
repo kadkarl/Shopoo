@@ -273,10 +273,9 @@
     <Content Include="Views\Utilisateurs\Index.cshtml" />
     <Content Include="Views\Commandes\Details.cshtml" />
     <Content Include="Views\Commandes\Index.cshtml" />
-    <Content Include="Views\Paniers\Index.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Paniers\Voir.cshtml" />
-    <Content Include="Views\Commandes\Payer.cshtml" />
+    <Content Include="Views\Commandes\Success.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using AutoMapper;
 using System.Collections.Generic;
+using System;
 
 namespace Shopoo.Controllers
 {
@@ -28,7 +29,7 @@ namespace Shopoo.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Produit produit = await db.Produits.FindAsync(id);
             if (produit == null)
@@ -78,6 +79,10 @@ namespace Shopoo.Controllers
 
                 if (p.Image == null) p.Image = "product-default.png";
 
+                Random random = new Random();
+
+                p.UniqIdPanier = random.Next();
+
                 db.Produits.Add(p);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -93,7 +98,7 @@ namespace Shopoo.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Produit produit = await db.Produits.FindAsync(id);
             if (produit == null)
@@ -138,7 +143,7 @@ namespace Shopoo.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Produit produit = await db.Produits.FindAsync(id);
             if (produit == null)

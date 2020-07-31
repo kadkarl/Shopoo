@@ -17,8 +17,6 @@ namespace Shopoo.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        //private EFShopoo Db = new EFShopoo();
-
 
         public AccountController()
         {
@@ -79,7 +77,7 @@ namespace Shopoo.Controllers
 
             //var rolename = UserManager.GetRoles(user.Id).FirstOrDefault();
 
-            List<ProduitVM> SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
+            List<Produit> SessionProduitPanier = (List<Produit>)Session["Panier"];
 
             // Ceci ne comptabilise pas les échecs de connexion pour le verrouillage du compte
             // Pour que les échecs de mot de passe déclenchent le verrouillage du compte, utilisez shouldLockout: true
@@ -427,6 +425,7 @@ namespace Shopoo.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Session.Remove("Utilisateur");
             return RedirectToAction("Index", "Home");
         }
 
