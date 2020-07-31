@@ -48,8 +48,8 @@ namespace Shopoo.Controllers
             return View(db.Produits.Where(p => p.MisEnVente == true).ToList<Produit>());
         }
 
-        //[Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
+        //[AllowAnonymous]
         public ActionResult Dashboard()
         {
             return View();

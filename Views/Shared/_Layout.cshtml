@@ -25,8 +25,8 @@
                     <li class="nav-item"><a href="/" class="nav-link"><i class="fa fa-home"></i> Accueil</a></li>
                     @if (Request.IsAuthenticated)
                     {
-                        /*if (User.IsInRole("Admin"))
-                        {*/
+                        if (User.IsInRole("Admin"))
+                        {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
                             <div class="dropdown-menu">
@@ -35,13 +35,12 @@
                                 <a href="/produits/index" class="dropdown-item"><i class="fa fa-envelope"></i> Produits</a>
                             </div>
                         </li>
-                        /*}
                         if (User.IsInRole("Client"))
-                        {*/
+                        {
                         <li class="nav-item">
                             <a href="/commandes/index" class="nav-link"><i class="fa fa-envelope"></i> Mes commandes</a>
                         </li>
-                        /*}*/
+                        }
                     }
                     <li class="nav-item">
                         <a href="/home/contact" class="nav-link"><i class="fa fa-envelope"></i> Nous contacter</a>
