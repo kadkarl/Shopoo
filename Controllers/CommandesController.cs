@@ -75,8 +75,7 @@ namespace Shopoo.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            string IdIdentityFramework = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            Utilisateur utilisateur = db.Utilisateurs.Where(u => u.IdIdentityFramework == IdIdentityFramework).FirstOrDefault<Utilisateur>();
+            Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
 
             Panier panier = db.Paniers.Where(p => p.Utilisateur.Id == utilisateur.Id).FirstOrDefault();
 

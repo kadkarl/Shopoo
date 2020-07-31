@@ -89,8 +89,8 @@ namespace Shopoo.Controllers
                 case SignInStatus.Success:
                     if (user != null)
                     {
-                        bool _isAdmin = UserManager.IsInRole(user.Id, "Admin");
-                        bool _isClient = UserManager.IsInRole(user.Id, "Client");
+                        bool _isAdmin = UserManager.IsInRole(user.Id, Role.Admin);
+                        bool _isClient = UserManager.IsInRole(user.Id, Role.Client);
 
                         if (_isAdmin)
                         {

@@ -22,6 +22,7 @@ namespace Shopoo.Models
         public ApplicationDbContext()
             : base("EFShopoo", throwIfV1Schema: false)
         {
+
         }
 
         public static ApplicationDbContext Create()

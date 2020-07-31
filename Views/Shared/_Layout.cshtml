@@ -25,21 +25,21 @@
                     <li class="nav-item"><a href="/" class="nav-link"><i class="fa fa-home"></i> Accueil</a></li>
                     @if (Request.IsAuthenticated)
                     {
-                        /*if (User.IsInRole("Admin"))
+                        /*if (User.IsInRole(Shopoo.Utils.Role.Admin))
                         {*/
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
                             <div class="dropdown-menu">
-                                <a href="/utilisateurs/index" class="dropdown-item"><i class="fa fa-envelope"></i> Utilisateurs</a>
-                                <a href="/categories/index" class="dropdown-item"><i class="fa fa-envelope"></i> Categories</a>
-                                <a href="/produits/index" class="dropdown-item"><i class="fa fa-envelope"></i> Produits</a>
+                                <a href="/utilisateurs/index" class="dropdown-item"><i class="fa fa-users"></i> Utilisateurs</a>
+                                <a href="/categories/index" class="dropdown-item"><i class="fa fa-list"></i> Categories</a>
+                                <a href="/produits/index" class="dropdown-item"><i class="fa fa-list"></i> Produits</a>
                             </div>
                         </li>
                         /*}
-                        if (User.IsInRole("Client"))
+                        if (User.IsInRole(Shopoo.Utils.Role.Client))
                         {*/
                         <li class="nav-item">
-                            <a href="/commandes/index" class="nav-link"><i class="fa fa-envelope"></i> Mes commandes</a>
+                            <a href="/commandes/index" class="nav-link"><i class="fa fa-credit-card"></i> Mes commandes</a>
                         </li>
                         /*}*/
                     }

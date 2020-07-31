@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Shopoo.Models;
+using Shopoo.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Shopoo.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -48,7 +50,8 @@ namespace Shopoo.Controllers
             return View(db.Produits.Where(p => p.MisEnVente == true).ToList<Produit>());
         }
 
-        //[Authorize(Roles = "Admin")]
+        //Gestion des roles en cours
+        //[Authorize(Roles = Role.Admin)]
         [AllowAnonymous]
         public ActionResult Dashboard()
         {
