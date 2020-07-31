@@ -26,7 +26,7 @@ namespace Shopoo.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Utilisateur utilisateur = await db.Utilisateurs.FindAsync(id);
             if (utilisateur == null)

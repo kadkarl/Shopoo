@@ -23,7 +23,7 @@ namespace Shopoo.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Categorie categorie = await db.Categories.FindAsync(id);
             if (categorie == null)
@@ -64,7 +64,7 @@ namespace Shopoo.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Categorie categorie = await db.Categories.FindAsync(id);
             if (categorie == null)
