@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Shopoo.Utils;
+using System.Data.Entity.Migrations;
 
 namespace Shopoo.Controllers
 {
@@ -84,6 +85,7 @@ namespace Shopoo.Controllers
 
                 for (int i = 0; i < SessionProduitPanier.Count(); i++)
                 {
+                    SessionProduitPanier[i].QuantiteEnStock--;
                     panier.Produits.Add(SessionProduitPanier[i]);
                 }
 
@@ -98,7 +100,6 @@ namespace Shopoo.Controllers
                 commande.Produits = panier.Produits;
                 commande.DateCommande = new DateTime().ToString();
                 commande.NumeroDeCommande = random.Next();
-
                 commande.TotalTTC = Calcul.CalculTotalTTC(SessionProduitPanier);
 
                 db.Commandes.Add(commande);

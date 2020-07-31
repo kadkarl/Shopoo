@@ -30,7 +30,7 @@ namespace Shopoo.Models
         public int UniqIdPanier { get; set; }
 
         public virtual ICollection<Categorie> Categorie { get; set; }
-        public virtual ICollection<Produit> Produits { get; set; }
+        public virtual ICollection<Panier> Paniers { get; set; }
         public virtual ICollection<Commande> Commandes { get; set; }
 
 
