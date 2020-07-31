@@ -96,29 +96,6 @@ namespace Shopoo.Controllers
             return View();
         }
 
-        // GET: Commandes/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Commandes/Create
-        // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
-        // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,DateCommande,EstValide,IdUtilisateur")] Commande commande)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Commandes.Add(commande);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-
-            return View(commande);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
