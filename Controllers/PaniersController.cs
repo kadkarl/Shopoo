@@ -14,14 +14,13 @@ namespace Shopoo.Controllers
     public class PaniersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private ApplicationUserManager _userManager;
         private IList<ProduitVM> ProduitsPanier;
-        private List<ProduitVM> SessionProduitPanier;
+        private IList<ProduitVM> SessionProduitPanier;
 
         // GET: Paniers
         public async Task<ActionResult> Index()
         {
-            return View(await db.Paniers.ToListAsync());
+            return View(await db.Commandes.ToListAsync());
         }
 
         // GET: Paniers/Details/5
@@ -105,9 +104,11 @@ namespace Shopoo.Controllers
         {
             bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
 
-            if (isLoggedIn)
+            if (Utils.UtilisateurUtil.IsLoggeIn())
             {
-                Utilisateur utilisateur = db.Utilisateurs.Where(u => u.IdIdentityFramework == System.Web.HttpContext.Current.User.Identity.GetUserId()).First<Utilisateur>();
+                string IdIdentityFramework = System.Web.HttpContext.Current.User.Identity.GetUserId();
+
+                Utilisateur utilisateur = db.Utilisateurs.Where(u => u.IdIdentityFramework == IdIdentityFramework).First<Utilisateur>();
 
                 SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
                 Panier panier = new Panier();
@@ -123,11 +124,27 @@ namespace Shopoo.Controllers
                     produit.Image = SessionProduitPanier[i].Image;
                     produit.QuantiteEnStock = SessionProduitPanier[i].QuantiteEnStock--;
                     panier.Produits.Add(produit);
+                    panier.Utilisateur = utilisateur;
                 }
 
+                db.Paniers.Add(panier);
+                db.SaveChanges();
 
+                Random random = new Random();
 
-                //return View("Voir", panier);
+                Commande commande = new Commande();
+                commande.Utilisateur = utilisateur;
+                commande.Produits = new List<Produit>();
+                commande.Produits = panier.Produits;
+                commande.DateCommande = new DateTime().ToString();
+                commande.NumeroDeCommande = random.Next();
+
+                commande.TotalTTC = Calcul.CalculTotalTTC(SessionProduitPanier);
+
+                db.Commandes.Add(commande);
+                db.SaveChanges();
+
+                return RedirectToAction("Details", "Commandes", new { id = commande.Id });
             }
 
             return RedirectToAction("Login", "Account");

@@ -183,6 +183,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007310915034_CommandeDateTypeFormat.cs" />
+    <Compile Include="Migrations\202007310915034_CommandeDateTypeFormat.Designer.cs">
+      <DependentUpon>202007310915034_CommandeDateTypeFormat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Commande.cs" />
@@ -197,6 +202,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\Calcul.cs" />
     <Compile Include="Utils\Role.cs" />
+    <Compile Include="Utils\UtilisateurUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -283,6 +289,7 @@
     <Content Include="Views\Paniers\Index.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Paniers\Voir.cshtml" />
+    <Content Include="Views\Commandes\Payer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -299,6 +306,11 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202007310915034_CommandeDateTypeFormat.resx">
+      <DependentUpon>202007310915034_CommandeDateTypeFormat.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

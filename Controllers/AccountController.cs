@@ -17,7 +17,7 @@ namespace Shopoo.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private EFShopoo Db = new EFShopoo();
+        //private EFShopoo Db = new EFShopoo();
 
 
         public AccountController()
@@ -75,8 +75,9 @@ namespace Shopoo.Controllers
                 return View(model);
             }
 
-
             ApplicationUser user = await UserManager.FindByEmailAsync(model.Email);
+
+            //var rolename = UserManager.GetRoles(user.Id).FirstOrDefault();
 
             List<ProduitVM> SessionProduitPanier = (List<ProduitVM>)Session["Panier"];
 
@@ -88,18 +89,18 @@ namespace Shopoo.Controllers
                 case SignInStatus.Success:
                     if (user != null)
                     {
-                        bool isAdmin = UserManager.IsInRole(user.Id, "Admin");
-                        bool isClient = UserManager.IsInRole(user.Id, "Client");
+                        bool _isAdmin = UserManager.IsInRole(user.Id, "Admin");
+                        bool _isClient = UserManager.IsInRole(user.Id, "Client");
 
-                        if (isAdmin)
+                        if (_isAdmin)
                         {
                             return RedirectToAction("Dashboard", "Home");
                         }
-                        else if (isClient)
+                        else if (_isClient)
                         {
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Commandes");
                         }
-                        else if (SessionProduitPanier != null)
+                        else if (_isClient && SessionProduitPanier != null)
                         {
                             return RedirectToAction("Voir", "Paniers");
                         }

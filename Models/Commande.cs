@@ -9,9 +9,14 @@ namespace Shopoo.Models
         [Key]
         public int Id { get; set; }
 
-        public DateTime DateCommande { get; set; }
+        [DataType(DataType.DateTime)]
+        public string DateCommande { get; set; }
 
         public bool EstValide { get; set; }
+
+        public double TotalTTC { get; set; }
+
+        public int NumeroDeCommande { get; set; }
 
         public virtual Utilisateur Utilisateur { get; set; }
 

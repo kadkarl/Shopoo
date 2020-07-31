@@ -6,7 +6,7 @@ namespace Shopoo.Utils
 {
     public class Calcul
     {
-        public static Double CalculTotalTTC(List<ProduitVM> produits)
+        public static Double CalculTotalTTC(IList<ProduitVM> produits)
         {
             double TotalTTC = 0;
 

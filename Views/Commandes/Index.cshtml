@@ -1,45 +1,32 @@
 ﻿@model IEnumerable<Shopoo.Models.Commande>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Mes commandes";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.DateCommande)
+            Numéro de commande
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EstValide)
+            Date commande
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IdUtilisateur)
-        </th>
-        <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCommande)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EstValide)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IdUtilisateur)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroDeCommande)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCommande)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>

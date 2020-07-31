@@ -4,35 +4,84 @@
     ViewBag.Title = "Details de ma commande";
 }
 
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DateCommande)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateCommande)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EstValide)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EstValide)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IdUtilisateur)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IdUtilisateur)
-        </dd>
-
-    </dl>
+<div class="row">
+    <div class="col-6 text-left">
+        <p>
+            @Model.Utilisateur.Nom <span>@Model.Utilisateur.Prenom</span>
+        </p>
+        <p>
+            @Model.Utilisateur.Adresse
+        </p>
+        <p>
+            @Model.Utilisateur.CodePostal <span>@Model.Utilisateur.Ville</span>
+        </p>
+        <p>
+            @Model.Utilisateur.TelephoneFixe
+        </p>
+    </div>
+    <div class="col-6 text-right">
+        <p>
+            <strong>Numéro de commande: </strong><br />
+            <strong>@Model.NumeroDeCommande</strong>
+        </p>
+        <p>
+            <strong>Date de commande: </strong> <br />
+            <strong>@Model.DateCommande</strong>
+        </p>
+    </div>
 </div>
+<div class="row">
+    <hr />
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table">
+            <tr>
+                <th>
+                    Libelle
+                </th>
+                <th>
+                    Prix
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+
+            @foreach (var item in @Model.Produits)
+            {
+                <tr>
+                    <td>
+                        <span><img src="~/images/produits/@Html.DisplayFor(modelItem => item.Image)" class="img-fluid" width="150px" title="Image produit @Html.DisplayFor(modelItem => item.Libelle)" /></span>
+                        @Html.DisplayFor(modelItem => item.Libelle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Prix) €
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <div class="row">
+            <div class="col-3 ml-auto text-center">
+                <h5 class="my-2 text-left">Total TTC</h5>
+                <h3 class="my-4 text-left">
+                    @ViewBag.TotalTTC €
+                </h3>
+            </div>
+        </div>
+
+        <div class="row my-3">
+            <div class="col-2">
+                <a href="/commandes/payer" class="btn btn-success">Payer</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retour", "Index")
 </p>

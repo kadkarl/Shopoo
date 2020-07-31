@@ -6,8 +6,16 @@
         @Html.AntiForgeryToken()
 
         <ul class="nav navbar-nav navbar-right">
+            @{
+                Shopoo.Models.Utilisateur utilisateur = new Shopoo.Models.Utilisateur();
+
+                if (Session["Utilisateur"] != null)
+                {
+                    utilisateur = (Session["Utilisateur"] as Shopoo.Models.Utilisateur);
+                }
+            }
             <li class="nav-item">
-                @Html.ActionLink("Hello " + User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+                @Html.ActionLink("Bienvenue " + utilisateur.Nom + ' ' + utilisateur.Prenom, "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
             </li>
             <li class="nav-item">
                 <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">
