@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Shopoo.Utils;
-using Microsoft.AspNet.Identity;
 
 namespace Shopoo.Controllers
 {
@@ -60,7 +59,7 @@ namespace Shopoo.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
 
             SessionProduitPanier = (List<Produit>)Session["Panier"];
